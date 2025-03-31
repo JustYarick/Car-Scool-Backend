@@ -36,5 +36,6 @@ keycloak:
   client-id: car_school_backend
   client-secret: odRNJT35c7U6Gykqx0fz0fq47zdVNVoI
 
+
 server:
   port: 7999

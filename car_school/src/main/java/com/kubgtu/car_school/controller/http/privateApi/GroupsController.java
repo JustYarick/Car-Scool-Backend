@@ -1,0 +1,42 @@
+package com.kubgtu.car_school.controller.http.privateApi;
+
+import com.kubgtu.car_school.model.DTO.GroupDTO;
+import com.kubgtu.car_school.service.GroupService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/groups")
+public class GroupsController {
+
+    GroupService groupService;
+
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
+        return ResponseEntity.ok(groupService.getAllGroups());
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public ResponseEntity<GroupDTO> getGroupById(@RequestParam long id) {
+        return ResponseEntity.ok(groupService.getById(id));
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public ResponseEntity<GroupDTO> createGroup(@RequestParam String name ) {
+        return ResponseEntity.ok(groupService.create(name));
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteGroup(@RequestParam long id) {
+        return ResponseEntity.ok(groupService.delete(id));
+    }
+}

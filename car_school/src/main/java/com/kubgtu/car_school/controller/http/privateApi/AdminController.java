@@ -3,6 +3,7 @@ package com.kubgtu.car_school.controller.http.privateApi;
 
 import com.kubgtu.car_school.model.DTO.StudentDTO;
 import com.kubgtu.car_school.service.KeycloakUserService;
+import com.kubgtu.car_school.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,10 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    KeycloakUserService keycloakUserService;
+    StudentService studentService;
 
     @GetMapping("/test")
     public ResponseEntity<List<StudentDTO>> test() {
-        return ResponseEntity.ok(keycloakUserService.getAllStudents());
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 }

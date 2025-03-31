@@ -1,11 +1,12 @@
 package com.kubgtu.car_school.service;
 
-import com.kubgtu.car_school.model.DTO.StudentDTO;
+import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +23,48 @@ public class KeycloakUserService {
     @Value("${keycloak.realm}")
     private String realm;
 
-    public Optional<StudentDTO> getStudentById(UUID userId) {
+    public Optional<UserRepresentation> getUserById(UUID userId) {
+        return Optional.ofNullable(keycloak.realm(realm)
+                .users()
+                .get(userId.toString())
+                .toRepresentation());
+    }
+
+    public Optional<UserRepresentation> getUserByIdWithRoles(UUID userId) {
         UserRepresentation user = keycloak.realm(realm)
                 .users()
                 .get(userId.toString())
                 .toRepresentation();
 
-        if (user == null) {
-            return Optional.empty();
-        }
+        if (user == null) return Optional.empty();
 
-        return Optional.of(StudentDTO.convert(user));
+        List<String> roles = keycloak.realm(realm)
+                .users()
+                .get(userId.toString())
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .map(RoleRepresentation::getName)
+                .toList();
+
+        user.setRealmRoles(roles);
+        return Optional.of(user);
     }
 
-    public List<StudentDTO> getAllStudents() {
-        List<UserRepresentation> users = keycloak.realm(realm)
+    public List<UserRepresentation> getAllUsers() {
+        return keycloak.realm(realm)
                 .users()
                 .list();
+    }
+
+    public List<UserRepresentation> getAllUsersWithRoles() {
+        List<UserRepresentation> users = keycloak.realm(realm).users().list();
 
         return users.stream()
-                .filter(user -> {
+                .map(user -> {
+                    UserRepresentation userWithRoles = new UserRepresentation();
+                    BeanUtils.copyProperties(user, userWithRoles);
                     List<String> roles = keycloak.realm(realm)
                             .users()
                             .get(user.getId())
@@ -51,10 +74,25 @@ public class KeycloakUserService {
                             .stream()
                             .map(RoleRepresentation::getName)
                             .toList();
-
-                    return roles.contains("STUDENT");
+                    userWithRoles.setRealmRoles(roles);
+                    return userWithRoles;
                 })
-                .map(StudentDTO::convert)
                 .toList();
+    }
+
+    public List<String> getUserRoles(String userId) {
+        return keycloak.realm(realm)
+                .users()
+                .get(userId)
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .map(RoleRepresentation::getName)
+                .toList();
+    }
+
+    public boolean hasRole(UserRepresentation user, String role) {
+        return user.getRealmRoles() != null && user.getRealmRoles().contains(role);
     }
 }
