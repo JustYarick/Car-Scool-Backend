@@ -1,4 +1,4 @@
-package com.kubgtu.car_school.exception;
+package com.kubgtu.car_school.exception.ExceptionClass;
 
 public class GroupNotFoundException extends RuntimeException {
     public GroupNotFoundException(String message) {

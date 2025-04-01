@@ -1,6 +1,6 @@
 package com.kubgtu.car_school.service;
 
-import jakarta.ws.rs.NotFoundException;
+import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
@@ -94,5 +94,17 @@ public class KeycloakUserService {
 
     public boolean hasRole(UserRepresentation user, String role) {
         return user.getRealmRoles() != null && user.getRealmRoles().contains(role);
+    }
+
+    public boolean isTeacher(UUID userUuid) {
+        Optional<UserRepresentation> optionalTeacher = getUserByIdWithRoles(userUuid);
+        if(optionalTeacher.isEmpty()) throw new UserNotFoundException("User not found");
+        return optionalTeacher.filter(userRepresentation -> hasRole(userRepresentation, "TEACHER")).isPresent();
+    }
+
+    public boolean isStudent(UUID userUuid) {
+        Optional<UserRepresentation> optionalTeacher = getUserByIdWithRoles(userUuid);
+        if(optionalTeacher.isEmpty()) throw new UserNotFoundException("User not found");
+        return optionalTeacher.filter(userRepresentation -> hasRole(userRepresentation, "STUDENT")).isPresent();
     }
 }

@@ -1,5 +1,6 @@
 package com.kubgtu.car_school.model.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kubgtu.car_school.entity.GroupsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +13,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupDTO {
+    @JsonProperty("group_id")
     private long id;
+    @JsonProperty("group_name")
     private String name;
+    @JsonProperty("student_uuid")
     private List<UUID> studentUuids;
 
     public static GroupDTO convert(GroupsEntity group) {

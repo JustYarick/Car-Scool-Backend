@@ -22,9 +22,9 @@ public class GroupsController {
         return ResponseEntity.ok(groupService.getAllGroups());
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<GroupDTO> getGroupById(@RequestParam long id) {
+    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id) {
         return ResponseEntity.ok(groupService.getById(id));
     }
 
@@ -34,9 +34,9 @@ public class GroupsController {
         return ResponseEntity.ok(groupService.create(name));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteGroup(@RequestParam long id) {
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
         return ResponseEntity.ok(groupService.delete(id));
     }
 }

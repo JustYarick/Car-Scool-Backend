@@ -1,7 +1,7 @@
 package com.kubgtu.car_school.service;
 
 import com.kubgtu.car_school.entity.GroupsEntity;
-import com.kubgtu.car_school.exception.GroupNotFoundException;
+import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.repository.GroupRepository;
 import lombok.AllArgsConstructor;

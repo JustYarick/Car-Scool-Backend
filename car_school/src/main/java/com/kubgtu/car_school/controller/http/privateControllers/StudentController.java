@@ -1,7 +1,7 @@
 package com.kubgtu.car_school.controller.http.privateApi;
 
-import com.kubgtu.car_school.exception.UserNotFoundException;
-import com.kubgtu.car_school.model.DTO.StudentGroupRequest;
+import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
+import com.kubgtu.car_school.model.requests.StudentGroupRequest;
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.model.DTO.StudentDTO;
 import com.kubgtu.car_school.service.StudentService;
@@ -26,10 +26,11 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping
+    @GetMapping("/{uuid}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<StudentDTO> getStudentById(@RequestParam UUID uuid) {
-        return ResponseEntity.ok(studentService.getStudentById(uuid).orElseThrow(() -> new UserNotFoundException("User not found")));
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(studentService.getStudentById(uuid)
+                .orElseThrow(() -> new UserNotFoundException("User not found")));
     }
 
     @PostMapping("/group")

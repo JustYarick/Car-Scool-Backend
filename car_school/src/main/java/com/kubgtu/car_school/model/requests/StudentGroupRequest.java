@@ -1,10 +1,7 @@
-package com.kubgtu.car_school.model.DTO;
+package com.kubgtu.car_school.model.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -15,7 +12,9 @@ import java.util.UUID;
 public class StudentGroupRequest {
 
     @JsonProperty("user_uuid")
+    @NonNull
     private UUID userUuid;
     @JsonProperty("group_id")
-    private long groupId;
+    @NonNull
+    private Long groupId;
 }
