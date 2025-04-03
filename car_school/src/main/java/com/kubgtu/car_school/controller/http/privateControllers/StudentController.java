@@ -1,4 +1,4 @@
-package com.kubgtu.car_school.controller.http.privateApi;
+package com.kubgtu.car_school.controller.http.privateControllers;
 
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.requests.StudentGroupRequest;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/api/student")
 @AllArgsConstructor
 public class StudentController {
 

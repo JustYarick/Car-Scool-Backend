@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleRequest {
+public class CreateScheduleRequest {
 
     @JsonProperty("group_id")
     @NonNull

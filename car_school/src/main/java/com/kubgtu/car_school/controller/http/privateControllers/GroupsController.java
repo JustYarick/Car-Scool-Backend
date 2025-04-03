@@ -1,4 +1,4 @@
-package com.kubgtu.car_school.controller.http.privateApi;
+package com.kubgtu.car_school.controller.http.privateControllers;
 
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.service.GroupService;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/groups")
+@RequestMapping("/api/groups")
 public class GroupsController {
 
     GroupService groupService;
@@ -32,6 +32,12 @@ public class GroupsController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<GroupDTO> createGroup(@RequestParam String name ) {
         return ResponseEntity.ok(groupService.create(name));
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public ResponseEntity<GroupDTO> updateGroup(@RequestParam Long id, @RequestParam String name ) {
+        return ResponseEntity.ok(groupService.update(id, name));
     }
 
     @DeleteMapping("/{id}")

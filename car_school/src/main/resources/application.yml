@@ -25,11 +25,6 @@ spring:
           issuer-uri: http://localhost:8080/realms/car_school
           jwk-set-uri: http://localhost:8080/realms/car_school/protocol/openid-connect/certs
 
-  logging:
-    level:
-      org.springframework.security: DEBUG
-      org.springframework.web: DEBUG
-
 keycloak:
   server-url: http://localhost:8080
   realm: car_school

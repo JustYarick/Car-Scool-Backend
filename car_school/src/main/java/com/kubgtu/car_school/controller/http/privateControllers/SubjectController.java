@@ -1,7 +1,8 @@
-package com.kubgtu.car_school.controller.http.privateApi;
+package com.kubgtu.car_school.controller.http.privateControllers;
 
 import com.kubgtu.car_school.model.DTO.SubjectDTO;
-import com.kubgtu.car_school.model.requests.SubjectRequest;
+import com.kubgtu.car_school.model.requests.CreateSubjectRequest;
+import com.kubgtu.car_school.model.requests.UpdateSubjectRequest;
 import com.kubgtu.car_school.service.SubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/subject")
+@RequestMapping("/api/subject")
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<SubjectDTO> addSubject(@RequestBody SubjectRequest subjectRequest) {
+    public ResponseEntity<SubjectDTO> addSubject(@RequestBody CreateSubjectRequest subjectRequest) {
         return ResponseEntity.ok(
                 SubjectDTO.convert(
                         subjectService.create(subjectRequest)
@@ -41,5 +42,11 @@ public class SubjectController {
     @GetMapping("/{id}")
     public ResponseEntity<SubjectDTO> getByIdSubject(@PathVariable Long id) {
         return ResponseEntity.ok(subjectService.getSubjectById(id));
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<SubjectDTO> updateSubject(@RequestBody UpdateSubjectRequest subjectRequest) {
+        return ResponseEntity.ok(subjectService.update(subjectRequest));
     }
 }

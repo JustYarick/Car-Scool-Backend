@@ -1,29 +1,21 @@
-package com.kubgtu.car_school.model.DTO;
+package com.kubgtu.car_school.model.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kubgtu.car_school.entity.SubjectEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class SubjectDTO {
+public class UpdateSubjectRequest {
     @JsonProperty("subject_id")
     private Long subjectId;
     @JsonProperty("subject_name")
+    @NonNull
     private String subjectName;
     @JsonProperty("subject_description")
+    @NonNull
     private String subjectDescription;
-
-    public static SubjectDTO convert(SubjectEntity subject) {
-        return new SubjectDTO(
-                subject.getSubjectId(),
-                subject.getSubjectName(),
-                subject.getSubjectDescription()
-        );
-    }
 }

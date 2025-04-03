@@ -9,7 +9,7 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubjectRequest {
+public class CreateSubjectRequest {
     @JsonProperty("subject_name")
     @NonNull
     private String subjectName;

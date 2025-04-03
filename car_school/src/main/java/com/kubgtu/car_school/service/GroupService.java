@@ -28,9 +28,8 @@ public class GroupService {
         GroupsEntity group = new GroupsEntity();
         group.setName(name);
         group.setStudentsUuid(new ArrayList<>());
-        group = groupRepository.save(group);
 
-        return GroupDTO.convert(group);
+        return GroupDTO.convert(groupRepository.save(group));
     }
 
     public Void delete(long id) {
@@ -47,5 +46,12 @@ public class GroupService {
         GroupsEntity group = groupRepository.findById(id)
                 .orElseThrow(() -> new GroupNotFoundException("Group not found"));
         return GroupDTO.convert(group);
+    }
+
+    public GroupDTO update(Long id, String name) {
+        GroupsEntity group = groupRepository.findById(id)
+                .orElseThrow(() -> new GroupNotFoundException("Group not found"));
+        group.setName(name);
+        return GroupDTO.convert(groupRepository.save(group));
     }
 }
