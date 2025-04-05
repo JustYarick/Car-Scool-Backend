@@ -1,0 +1,83 @@
+{
+  "realm" : "car_school",
+  "users" : [ {
+    "id" : "a12ddb17-0888-4e35-a465-81ea38053e35",
+    "username" : "example@gmail.com",
+    "firstName" : "example",
+    "lastName" : "example",
+    "email" : "example@gmail.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1743282849553,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-car_school", "USER", "STUDENT", "TEACHER" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "117363a1-282f-4400-822c-6a250001f33f",
+    "username" : "service-account-car_school_backend",
+    "emailVerified" : false,
+    "createdTimestamp" : 1743281863538,
+    "enabled" : true,
+    "totp" : false,
+    "serviceAccountClientId" : "car_school_backend",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-car_school" ],
+    "clientRoles" : {
+      "realm-management" : [ "manage-users", "view-users", "query-users", "view-realm" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "c650eed9-57c6-4f9a-88cd-5a033d36fc0e",
+    "username" : "v2yaroslav.davkov@gmail.com",
+    "firstName" : "Сергей",
+    "lastName" : "Давков",
+    "email" : "v2yaroslav.davkov@gmail.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1743251834207,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "7d776bd3-8911-4dfc-8759-b2e9ce25d230",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1743251848922,
+      "secretData" : "{\"value\":\"KGSMhyK/lSkbOxkH3v6UhbApb51OZ8wwawsmXU0teFk=\",\"salt\":\"PtV1tDoWXTk/4x8P36iHig==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-car_school" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "8544e484-2711-4ca1-9ce2-4e21eb7021e0",
+    "username" : "yaroslav.davkov@gmail.com",
+    "firstName" : "YARICK",
+    "lastName" : "YARICK",
+    "email" : "yaroslav.davkov@gmail.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1743250719130,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "db5cef61-f5df-46e0-9a08-1fcd2d9a8e89",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1743250999213,
+      "secretData" : "{\"value\":\"IjNmClHGKNQFpnCP+bBUG9aB7f0Tccph8yBpHiciNlw=\",\"salt\":\"r2XuGvZHB3DePcG7aRth9A==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ADMIN", "default-roles-car_school" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}

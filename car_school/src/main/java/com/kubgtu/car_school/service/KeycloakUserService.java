@@ -8,6 +8,8 @@ import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -106,5 +108,11 @@ public class KeycloakUserService {
         Optional<UserRepresentation> optionalTeacher = getUserByIdWithRoles(userUuid);
         if(optionalTeacher.isEmpty()) throw new UserNotFoundException("User not found");
         return optionalTeacher.filter(userRepresentation -> hasRole(userRepresentation, "STUDENT")).isPresent();
+    }
+
+    public Optional<UserRepresentation> getUserByContext(){
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UUID userUuid = UUID.fromString(jwt.getClaim("sub"));
+        return getUserByIdWithRoles(userUuid);
     }
 }

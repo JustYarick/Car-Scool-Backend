@@ -34,7 +34,7 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.create(scheduleRequest));
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<ScheduleDTO> updateSchedule(@RequestBody UpdateScheduleRequest updateScheduleRequest) {
         return ResponseEntity.ok(scheduleService.update(updateScheduleRequest));

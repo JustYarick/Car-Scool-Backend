@@ -25,7 +25,7 @@ public class RequestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserRequestDTO> updateRequest(@RequestBody UpdateUserRequestRequest updateUserRequestRequest) {
         return ResponseEntity.ok(requestService.update(updateUserRequestRequest));

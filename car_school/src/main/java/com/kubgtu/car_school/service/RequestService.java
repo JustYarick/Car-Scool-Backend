@@ -8,6 +8,8 @@ import com.kubgtu.car_school.model.requests.UpdateUserRequestRequest;
 import com.kubgtu.car_school.repository.UserRequestRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,12 +21,12 @@ import java.util.UUID;
 public class RequestService {
 
     private final UserRequestRepository userRequestRepository;
-    private final SecurityContextService securityContextService;
     private final KeycloakUserService keycloakUserService;
 
     public void makeRequest(CreateUserRequestRequest createUserRequestRequest) {
 
-        UUID userUuid = securityContextService.getCurrentUserUuid();
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UUID userUuid = UUID.fromString(jwt.getClaim("sub"));
         Optional<UserRequestEntity> existingRequest = userRequestRepository.findByUserId(userUuid).stream().findFirst();
         UserRequestEntity requestEntity = existingRequest.orElse(new UserRequestEntity());
 

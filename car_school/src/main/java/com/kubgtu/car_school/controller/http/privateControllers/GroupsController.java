@@ -34,7 +34,7 @@ public class GroupsController {
         return ResponseEntity.ok(groupService.create(name));
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<GroupDTO> updateGroup(@RequestParam Long id, @RequestParam String name ) {
         return ResponseEntity.ok(groupService.update(id, name));

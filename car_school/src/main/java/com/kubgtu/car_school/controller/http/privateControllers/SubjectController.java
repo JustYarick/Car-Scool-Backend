@@ -44,7 +44,7 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.getSubjectById(id));
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<SubjectDTO> updateSubject(@RequestBody UpdateSubjectRequest subjectRequest) {
         return ResponseEntity.ok(subjectService.update(subjectRequest));
