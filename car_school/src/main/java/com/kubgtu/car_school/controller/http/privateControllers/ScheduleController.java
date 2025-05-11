@@ -28,18 +28,18 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.getScheduleById(id));
     }
 
-
     @Operation(
             summary = "Получить все расписание",
             description = "Доступно всем"
     )
     @GetMapping
-    public ResponseEntity<List<ScheduleDTO>> getAllSchedules() {
-        return ResponseEntity.ok(scheduleService.getAllLessons());
+    public ResponseEntity<List<ScheduleDTO>> getAllSchedules(@RequestParam(required = false, defaultValue = "0") int page,
+                                                             @RequestParam(required = false, defaultValue = "100") int size) {
+        return ResponseEntity.ok(scheduleService.getByPage(page, size));
     }
 
     @Operation(
-            summary = "Получить создать расписание",
+            summary = "Cоздать расписание",
             description = "Доступно админам, преподавателям"
     )
     @PostMapping
@@ -49,10 +49,10 @@ public class ScheduleController {
     }
 
     @Operation(
-            summary = "Обнаваить расписание по id",
+            summary = "Обновить расписание по id",
             description = "Доступно админам, преподавателям"
     )
-    @PatchMapping("/update")
+    @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<ScheduleDTO> updateSchedule(@RequestBody UpdateScheduleRequest updateScheduleRequest) {
         return ResponseEntity.ok(scheduleService.update(updateScheduleRequest));
@@ -62,9 +62,9 @@ public class ScheduleController {
             summary = "Удалить расписание по id",
             description = "Доступно админам"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSchedule(@RequestParam Long id) {
         scheduleService.delete(id);
         return ResponseEntity.ok().build();
     }

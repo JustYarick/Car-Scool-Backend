@@ -7,6 +7,7 @@ import com.kubgtu.car_school.model.requests.CreateSubjectRequest;
 import com.kubgtu.car_school.model.requests.UpdateSubjectRequest;
 import com.kubgtu.car_school.repository.SubjectRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,11 @@ public class SubjectService {
 
     private SubjectRepository subjectRepository;
 
-    public List<SubjectDTO> getAllSubjects() {
-        return subjectRepository.findAll().stream().map(SubjectDTO::convert).toList();
+    public List<SubjectDTO> getByPage(int page, int size) {
+        return subjectRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
+                .stream()
+                .map(SubjectDTO::convert)
+                .toList();
     }
 
     public SubjectEntity create(CreateSubjectRequest subjectRequest) {

@@ -19,17 +19,18 @@ public class GroupsController {
 
     @Operation(
             summary = "Получить все группы",
-            description = "Доступно админам и учителям"
+            description = "Доступно админам и преподавателям"
     )
-    @GetMapping("/all")
+    @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<List<GroupDTO>> getAllGroups() {
-        return ResponseEntity.ok(groupService.getAllGroups());
+    public ResponseEntity<List<GroupDTO>> getAllGroups(@RequestParam(required = false, defaultValue = "0") int page,
+                                                       @RequestParam(required = false, defaultValue = "100") int size) {
+        return ResponseEntity.ok(groupService.getByPage(page, size));
     }
 
     @Operation(
             summary = "Получить группу по id",
-            description = "Доступно админам и учителям"
+            description = "Доступно админам, преподавателям, студентам"
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
@@ -39,31 +40,31 @@ public class GroupsController {
 
     @Operation(
             summary = "Создать группу",
-            description = "Доступно админам и учителям"
+            description = "Доступно админам"
     )
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<GroupDTO> createGroup(@RequestParam String name ) {
         return ResponseEntity.ok(groupService.create(name));
     }
 
     @Operation(
-            summary = "Обновить данные группу",
-            description = "Доступно админам и учителям"
+            summary = "Обновить данные группы",
+            description = "Доступно админам"
     )
-    @PatchMapping("/update")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<GroupDTO> updateGroup(@RequestParam Long id, @RequestParam String name ) {
-        return ResponseEntity.ok(groupService.update(id, name));
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<GroupDTO> updateGroup(@RequestBody GroupDTO groupDTO) {
+        return ResponseEntity.ok(groupService.update(groupDTO));
     }
 
     @Operation(
             summary = "Удалить группу",
             description = "Доступно админам"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGroup(@RequestParam Long id) {
         return ResponseEntity.ok(groupService.delete(id));
     }
 }

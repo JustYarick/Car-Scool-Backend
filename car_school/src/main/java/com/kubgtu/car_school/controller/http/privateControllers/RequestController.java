@@ -24,7 +24,7 @@ public class RequestController {
             description = "Доступно админам и юзерам"
     )
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') and !hasRole('STUDENT')")
     public ResponseEntity<Void> makeRequest(@RequestBody CreateUserRequestRequest createUserRequestRequest) {
         requestService.makeRequest(createUserRequestRequest);
         return ResponseEntity.ok().build();
@@ -34,19 +34,19 @@ public class RequestController {
             summary = "Обновить информацию о заявке",
             description = "Доступно админам"
     )
-    @PatchMapping("/update")
+    @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserRequestDTO> updateRequest(@RequestBody UpdateUserRequestRequest updateUserRequestRequest) {
         return ResponseEntity.ok(requestService.update(updateUserRequestRequest));
     }
 
     @Operation(
-            summary = "Удалить заявку",
+            summary = "Удалить заявку по id",
             description = "Доступно админам"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteRequest(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRequest(@RequestParam Long id) {
         requestService.delete(id);
         return ResponseEntity.ok().build();
     }
@@ -67,10 +67,9 @@ public class RequestController {
     )
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<List<UserRequestDTO>> getRequests(@RequestParam(required = false) Integer countStart,
-                                                            @RequestParam(required = false) Integer countEnd) {
+    public ResponseEntity<List<UserRequestDTO>> getRequests(@RequestParam(required = false, defaultValue = "0") int page,
+                                                            @RequestParam(required = false, defaultValue = "100") int size) {
 
-        if (countStart != null && countEnd != null) return ResponseEntity.ok(requestService.getByCount(countStart, countEnd));
-        else return ResponseEntity.ok(requestService.getAll());
+        return ResponseEntity.ok(requestService.getByPage(page, size));
     }
 }

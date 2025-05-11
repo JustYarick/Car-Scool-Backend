@@ -11,6 +11,7 @@ import com.kubgtu.car_school.repository.GroupRepository;
 import com.kubgtu.car_school.repository.ScheduleRepository;
 import com.kubgtu.car_school.repository.SubjectRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class ScheduleService {
     private final KeycloakUserService keycloakUserService;
     private final SubjectRepository subjectRepository;
 
-    public List<ScheduleDTO> getAllLessons() {
-        return scheduleRepository.findAll().stream()
+    public List<ScheduleDTO> getByPage(int page, int size) {
+        return scheduleRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
+                .stream()
                 .map(ScheduleDTO::convert)
                 .toList();
     }

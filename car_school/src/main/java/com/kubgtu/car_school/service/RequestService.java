@@ -38,15 +38,8 @@ public class RequestService {
     }
 
 
-    public List<UserRequestDTO> getByCount(int countStart, int countEnd) {
-        return userRequestRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(countStart, countEnd))
-                .stream()
-                .map(request -> UserRequestDTO.convert(request, keycloakUserService))
-                .toList();
-    }
-
-    public List<UserRequestDTO> getAll() {
-        return userRequestRepository.findAll()
+    public List<UserRequestDTO> getByPage(int page, int size) {
+        return userRequestRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
                 .stream()
                 .map(request -> UserRequestDTO.convert(request, keycloakUserService))
                 .toList();

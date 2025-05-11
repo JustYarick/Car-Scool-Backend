@@ -5,6 +5,7 @@ import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.repository.GroupRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,10 +17,9 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
 
-
-
-    public List<GroupDTO> getAllGroups() {
-        return groupRepository.findAll().stream()
+    public List<GroupDTO> getByPage(int page, int size) {
+        return groupRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
+                .stream()
                 .map(GroupDTO::convert)
                 .toList();
     }
@@ -48,10 +48,15 @@ public class GroupService {
         return GroupDTO.convert(group);
     }
 
-    public GroupDTO update(Long id, String name) {
-        GroupsEntity group = groupRepository.findById(id)
+    public GroupDTO update(GroupDTO groupDTO) {
+        GroupsEntity group = groupRepository.findById(groupDTO.getId())
                 .orElseThrow(() -> new GroupNotFoundException("Group not found"));
-        group.setName(name);
+        if(groupDTO.getName() != null) {
+            group.setName(groupDTO.getName());
+        }
+        if(group.getStudentsUuid() != null) {
+            group.setStudentsUuid(groupDTO.getStudentUuids());
+        }
         return GroupDTO.convert(groupRepository.save(group));
     }
 }
