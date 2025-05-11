@@ -1,6 +1,6 @@
 package com.kubgtu.car_school.repository;
 
-import com.kubgtu.car_school.entity.UserRequestEntity;
+import com.kubgtu.car_school.model.entity.UserRequestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.domain.Pageable;

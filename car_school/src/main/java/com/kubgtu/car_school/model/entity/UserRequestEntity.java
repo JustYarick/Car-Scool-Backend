@@ -1,4 +1,4 @@
-package com.kubgtu.car_school.entity;
+package com.kubgtu.car_school.model.entity;
 
 import com.kubgtu.car_school.model.RequestStatusTypes;
 import jakarta.persistence.*;

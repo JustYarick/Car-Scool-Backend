@@ -1,6 +1,6 @@
 package com.kubgtu.car_school.service;
 
-import com.kubgtu.car_school.entity.UserRequestEntity;
+import com.kubgtu.car_school.model.entity.UserRequestEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.ResourceNotFoundException;
 import com.kubgtu.car_school.model.DTO.UserRequestDTO;
 import com.kubgtu.car_school.model.requests.CreateUserRequestRequest;

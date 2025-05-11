@@ -1,7 +1,6 @@
 package com.kubgtu.car_school.service;
 
-import com.kubgtu.car_school.entity.GroupsEntity;
-import com.kubgtu.car_school.entity.ScheduleEntity;
+import com.kubgtu.car_school.model.entity.ScheduleEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.ResourceNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;

@@ -1,6 +1,6 @@
 package com.kubgtu.car_school.repository;
 
-import com.kubgtu.car_school.entity.GroupsEntity;
+import com.kubgtu.car_school.model.entity.GroupsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

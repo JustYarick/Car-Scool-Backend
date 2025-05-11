@@ -1,7 +1,7 @@
 package com.kubgtu.car_school.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kubgtu.car_school.entity.ScheduleEntity;
+import com.kubgtu.car_school.model.entity.ScheduleEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;

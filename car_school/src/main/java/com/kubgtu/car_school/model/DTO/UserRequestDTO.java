@@ -1,7 +1,7 @@
 package com.kubgtu.car_school.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kubgtu.car_school.entity.UserRequestEntity;
+import com.kubgtu.car_school.model.entity.UserRequestEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.RequestStatusTypes;
 import com.kubgtu.car_school.service.KeycloakUserService;

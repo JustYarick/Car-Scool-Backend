@@ -1,7 +1,7 @@
 package com.kubgtu.car_school.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kubgtu.car_school.entity.GroupsEntity;
+import com.kubgtu.car_school.model.entity.GroupsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
