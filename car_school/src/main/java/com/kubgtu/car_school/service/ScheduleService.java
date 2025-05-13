@@ -5,6 +5,7 @@ import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.ResourceNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.DTO.ScheduleDTO;
+import com.kubgtu.car_school.model.interfaces.IamApiService;
 import com.kubgtu.car_school.model.requests.CreateScheduleRequest;
 import com.kubgtu.car_school.model.requests.UpdateScheduleRequest;
 import com.kubgtu.car_school.repository.GroupRepository;
@@ -22,11 +23,11 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final GroupRepository groupRepository;
-    private final KeycloakUserService keycloakUserService;
+    private final IamApiService identityService;
     private final SubjectRepository subjectRepository;
 
     public List<ScheduleDTO> getByPage(int page, int size) {
-        return scheduleRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
+        return scheduleRepository.findAllByOrderByIdAsc(PageRequest.of(page, size))
                 .stream()
                 .map(ScheduleDTO::convert)
                 .toList();
@@ -38,7 +39,7 @@ public class ScheduleService {
     }
 
     public ScheduleDTO create(CreateScheduleRequest request) {
-        if(!keycloakUserService.isTeacher(request.getTeacherUUID())) throw new UserNotFoundException("Not a teacher");
+        if(!identityService.isTeacher(request.getTeacherUUID())) throw new UserNotFoundException("Not a teacher");
 
         ScheduleEntity scheduleEntity = new ScheduleEntity();
         scheduleEntity.setLessonDateStart(request.getLessonDateStart());

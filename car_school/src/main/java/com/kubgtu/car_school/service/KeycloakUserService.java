@@ -1,6 +1,7 @@
 package com.kubgtu.car_school.service;
 
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
+import com.kubgtu.car_school.model.interfaces.IamApiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class KeycloakUserService {
+public class KeycloakUserService implements IamApiService {
     private final Keycloak keycloak;
 
     @Value("${keycloak.realm}")
@@ -52,34 +53,6 @@ public class KeycloakUserService {
 
         user.setRealmRoles(roles);
         return Optional.of(user);
-    }
-
-    public List<UserRepresentation> getAllUsers() {
-        return keycloak.realm(realm)
-                .users()
-                .list();
-    }
-
-    public List<UserRepresentation> getAllUsersWithRoles() {
-        List<UserRepresentation> users = keycloak.realm(realm).users().list();
-
-        return users.stream()
-                .map(user -> {
-                    UserRepresentation userWithRoles = new UserRepresentation();
-                    BeanUtils.copyProperties(user, userWithRoles);
-                    List<String> roles = keycloak.realm(realm)
-                            .users()
-                            .get(user.getId())
-                            .roles()
-                            .realmLevel()
-                            .listAll()
-                            .stream()
-                            .map(RoleRepresentation::getName)
-                            .toList();
-                    userWithRoles.setRealmRoles(roles);
-                    return userWithRoles;
-                })
-                .toList();
     }
 
     public List<String> getUserRoles(String userId) {

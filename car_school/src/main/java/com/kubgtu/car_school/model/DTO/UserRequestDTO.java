@@ -14,6 +14,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 @Data
 @AllArgsConstructor
@@ -22,12 +23,8 @@ import java.util.UUID;
 public class UserRequestDTO {
     @JsonProperty("id")
     private Long id;
-    @JsonProperty("user_id")
-    private UUID userId;
-    @JsonProperty("user_first_name")
-    private String userFirstName;
-    @JsonProperty("user_second_name")
-    private String userSecondName;
+    @JsonProperty("user")
+    private UserDTO user;
     @JsonProperty("telephone")
     private String telephone;
     @JsonProperty("time_to_call")
@@ -35,19 +32,14 @@ public class UserRequestDTO {
     @JsonProperty("status")
     private RequestStatusTypes status;
 
-    public static UserRequestDTO convert(UserRequestEntity userRequestEntity, KeycloakUserService keycloakUserService) {
+    public static UserRequestDTO convert(UserRequestEntity userRequestEntity, Function<UUID, Optional<UserRepresentation>> getUserFunction) {
 
-        Optional<UserRepresentation> userOpt = keycloakUserService.getUserById(userRequestEntity.getUserId());
-        if (userOpt.isEmpty()) {
-            throw new UserNotFoundException("User not found");
-        }
-        UserRepresentation userRepresentation = userOpt.get();
+        UserRepresentation user = getUserFunction.apply(userRequestEntity.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         return new UserRequestDTO(
                 userRequestEntity.getId(),
-                userRequestEntity.getUserId(),
-                userRepresentation.getFirstName(),
-                userRepresentation.getLastName(),
+                UserDTO.convert(user),
                 userRequestEntity.getTelephone(),
                 userRequestEntity.getTimeToCall(),
                 userRequestEntity.getStatus()

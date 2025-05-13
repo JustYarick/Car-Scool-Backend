@@ -1,10 +1,11 @@
-package com.kubgtu.car_school.controller.http.privateControllers;
+package com.kubgtu.car_school.controller.http;
 
 import com.kubgtu.car_school.model.DTO.SubjectDTO;
 import com.kubgtu.car_school.model.requests.CreateSubjectRequest;
 import com.kubgtu.car_school.model.requests.UpdateSubjectRequest;
 import com.kubgtu.car_school.service.SubjectService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class SubjectController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<SubjectDTO> addSubject(@RequestBody CreateSubjectRequest subjectRequest) {
+    public ResponseEntity<SubjectDTO> addSubject(@Valid  @RequestBody CreateSubjectRequest subjectRequest) {
         return ResponseEntity.ok(SubjectDTO.convert(subjectService.create(subjectRequest)));
     }
 
@@ -34,7 +35,7 @@ public class SubjectController {
     )
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteSubject(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteSubject(@Valid @RequestParam Long id) {
         subjectService.delete(id);
         return ResponseEntity.ok().build();
     }
@@ -54,7 +55,7 @@ public class SubjectController {
             description = "Доступно всем"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable  Long id) {
+    public ResponseEntity<SubjectDTO> getSubjectById(@Valid @PathVariable  Long id) {
         return ResponseEntity.ok(subjectService.getSubjectById(id));
     }
 
@@ -64,7 +65,7 @@ public class SubjectController {
     )
     @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<SubjectDTO> updateSubject(@RequestBody UpdateSubjectRequest subjectRequest) {
+    public ResponseEntity<SubjectDTO> updateSubject(@Valid @RequestBody UpdateSubjectRequest subjectRequest) {
         return ResponseEntity.ok(subjectService.update(subjectRequest));
     }
 }

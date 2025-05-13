@@ -1,13 +1,15 @@
-package com.kubgtu.car_school.controller.http.privateControllers;
+package com.kubgtu.car_school.controller.http;
 
 import com.kubgtu.car_school.model.DTO.UserRequestDTO;
 import com.kubgtu.car_school.model.requests.CreateUserRequestRequest;
 import com.kubgtu.car_school.model.requests.UpdateUserRequestRequest;
 import com.kubgtu.car_school.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/request")
 @AllArgsConstructor
+@Validated
 public class RequestController {
 
     private final RequestService requestService;
@@ -25,7 +28,7 @@ public class RequestController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') and !hasRole('STUDENT')")
-    public ResponseEntity<Void> makeRequest(@RequestBody CreateUserRequestRequest createUserRequestRequest) {
+    public ResponseEntity<Void> makeRequest(@Valid  @RequestBody CreateUserRequestRequest createUserRequestRequest) {
         requestService.makeRequest(createUserRequestRequest);
         return ResponseEntity.ok().build();
     }
@@ -36,7 +39,7 @@ public class RequestController {
     )
     @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<UserRequestDTO> updateRequest(@RequestBody UpdateUserRequestRequest updateUserRequestRequest) {
+    public ResponseEntity<UserRequestDTO> updateRequest(@Valid @RequestBody UpdateUserRequestRequest updateUserRequestRequest) {
         return ResponseEntity.ok(requestService.update(updateUserRequestRequest));
     }
 
@@ -46,7 +49,7 @@ public class RequestController {
     )
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteRequest(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteRequest(@Valid @RequestParam Long id) {
         requestService.delete(id);
         return ResponseEntity.ok().build();
     }
@@ -57,7 +60,7 @@ public class RequestController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<UserRequestDTO> getRequest(@PathVariable Long id) {
+    public ResponseEntity<UserRequestDTO> getRequest(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(requestService.getById(id));
     }
 

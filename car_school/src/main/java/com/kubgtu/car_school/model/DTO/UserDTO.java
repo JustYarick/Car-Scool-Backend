@@ -9,20 +9,17 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class StudentDTO {
+public class UserDTO {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("username")
-    private String username;
     @JsonProperty("first_name")
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
 
-    public static StudentDTO convert(UserRepresentation user) {
-        return new StudentDTO(
+    public static UserDTO convert(UserRepresentation user) {
+        return new UserDTO(
                 UUID.fromString(user.getId()),
-                user.getUsername(),
                 user.getFirstName(),
                 user.getLastName()
         );

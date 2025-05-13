@@ -3,6 +3,7 @@ package com.kubgtu.car_school.service;
 import com.kubgtu.car_school.model.entity.UserRequestEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.ResourceNotFoundException;
 import com.kubgtu.car_school.model.DTO.UserRequestDTO;
+import com.kubgtu.car_school.model.interfaces.IamApiService;
 import com.kubgtu.car_school.model.requests.CreateUserRequestRequest;
 import com.kubgtu.car_school.model.requests.UpdateUserRequestRequest;
 import com.kubgtu.car_school.repository.UserRequestRepository;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class RequestService {
 
     private final UserRequestRepository userRequestRepository;
-    private final KeycloakUserService keycloakUserService;
+    private final IamApiService identityService;
 
     public void makeRequest(CreateUserRequestRequest createUserRequestRequest) {
 
@@ -41,7 +42,7 @@ public class RequestService {
     public List<UserRequestDTO> getByPage(int page, int size) {
         return userRequestRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
                 .stream()
-                .map(request -> UserRequestDTO.convert(request, keycloakUserService))
+                .map(request -> UserRequestDTO.convert(request, identityService::getUserById))
                 .toList();
     }
 
@@ -55,7 +56,7 @@ public class RequestService {
         request.setStatus(updateUserRequestRequest.getStatus());
 
         userRequestRepository.save(request);
-        return UserRequestDTO.convert(request, keycloakUserService);
+        return UserRequestDTO.convert(request, identityService::getUserById);
     }
 
     public void delete(Long id) {
@@ -64,6 +65,6 @@ public class RequestService {
 
     public UserRequestDTO getById(Long id) {
         UserRequestEntity request = userRequestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("request not found"));
-        return UserRequestDTO.convert(request, keycloakUserService);
+        return UserRequestDTO.convert(request, identityService::getUserById);
     }
 }

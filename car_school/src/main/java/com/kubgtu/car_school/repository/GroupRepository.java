@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends JpaRepository<GroupsEntity, Long> {
 
-    List<GroupsEntity> findAllByOrderByCreateRequestDateAsc(Pageable pageable);
+    List<GroupsEntity> findAllByOrderByNameAsc(Pageable pageable);
 }

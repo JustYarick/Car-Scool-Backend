@@ -19,7 +19,7 @@ public class SubjectService {
     private SubjectRepository subjectRepository;
 
     public List<SubjectDTO> getByPage(int page, int size) {
-        return subjectRepository.findAllByOrderByCreateRequestDateAsc(PageRequest.of(page, size))
+        return subjectRepository.findAllByOrderBySubjectIdAsc(PageRequest.of(page, size))
                 .stream()
                 .map(SubjectDTO::convert)
                 .toList();
