@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/request")
+@RequestMapping("/api/v1/request")
 @AllArgsConstructor
 @Validated
 public class RequestController {
@@ -28,7 +28,7 @@ public class RequestController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') and !hasRole('STUDENT')")
-    public ResponseEntity<Void> makeRequest(@Valid  @RequestBody CreateUserRequestRequest createUserRequestRequest) {
+    public ResponseEntity<Void> createRequest(@Valid  @RequestBody CreateUserRequestRequest createUserRequestRequest) {
         requestService.makeRequest(createUserRequestRequest);
         return ResponseEntity.ok().build();
     }

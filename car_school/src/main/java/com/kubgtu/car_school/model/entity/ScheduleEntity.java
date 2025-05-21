@@ -21,7 +21,7 @@ public class ScheduleEntity {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private GroupsEntity group;
+    private GroupEntity group;
 
     private UUID teacherUUID;
 

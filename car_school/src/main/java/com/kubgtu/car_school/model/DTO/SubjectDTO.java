@@ -20,10 +20,12 @@ public class SubjectDTO {
     private String subjectDescription;
 
     public static SubjectDTO convert(SubjectEntity subject) {
-        return new SubjectDTO(
-                subject.getSubjectId(),
-                subject.getSubjectName(),
-                subject.getSubjectDescription()
-        );
+        if (subject == null) return null;
+
+        return SubjectDTO.builder()
+                .subjectId(subject.getSubjectId())
+                .subjectName(subject.getSubjectName())
+                .subjectDescription(subject.getSubjectDescription())
+                .build();
     }
 }

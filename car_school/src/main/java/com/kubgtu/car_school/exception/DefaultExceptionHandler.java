@@ -2,6 +2,8 @@ package com.kubgtu.car_school.exception;
 
 import com.kubgtu.car_school.exception.ExceptionClass.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,9 +33,9 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(GroupNotFoundException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiError> handleException(
-            GroupNotFoundException e,
+            IllegalArgumentException e,
             HttpServletRequest request) {
         ApiError apiError = new ApiError(
                 request.getRequestURI(),
@@ -42,6 +44,32 @@ public class DefaultExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiError> handleException(
+            ConstraintViolationException e,
+            HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GroupNotFoundException.class)
+    public ResponseEntity<ApiError> handleException(
+            GroupNotFoundException e,
+            HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserAlreadyExistException.class)

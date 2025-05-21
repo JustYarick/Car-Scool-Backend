@@ -2,7 +2,8 @@ package com.kubgtu.car_school.controller.http;
 
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.model.DTO.UserDTO;
-import com.kubgtu.car_school.service.GroupService;
+import com.kubgtu.car_school.service.group.GroupService;
+import com.kubgtu.car_school.service.group.GroupUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,11 +16,12 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/groups")
+@RequestMapping("/api/v1/groups")
 @Validated
-public class GroupsController {
+public class GroupController {
 
     private final GroupService groupService;
+    private final GroupUserService groupUserService;
 
     @Operation(
             summary = "Получить все группы",
@@ -38,7 +40,7 @@ public class GroupsController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<GroupDTO> getGroupById(@Valid @PathVariable Long id) {
+    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id) {
         return ResponseEntity.ok(groupService.getById(id));
     }
 
@@ -48,8 +50,8 @@ public class GroupsController {
     )
     @GetMapping("/{id}/users")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<List<UserDTO>> getUsersByGroupId(@Valid @PathVariable Long id) {
-        return ResponseEntity.ok(groupService.getGroupUsers(id));
+    public ResponseEntity<List<UserDTO>> getUsersByGroupId(@PathVariable Long id) {
+        return ResponseEntity.ok(groupUserService.getGroupUsers(id));
     }
 
     @Operation(
@@ -58,7 +60,8 @@ public class GroupsController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<GroupDTO> createGroup(@Valid @RequestParam String name ) {
+    public ResponseEntity<GroupDTO> createGroup(@RequestParam String name ) {
+        if (name == null || name.isBlank()) throw  new IllegalArgumentException("name is null or empty");
         return ResponseEntity.ok(groupService.create(name));
     }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subject")
+@RequestMapping("/api/v1/subject")
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;

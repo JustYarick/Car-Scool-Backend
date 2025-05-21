@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kubgtu.car_school.model.entity.UserRequestEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.RequestStatusTypes;
-import com.kubgtu.car_school.service.KeycloakUserService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,16 +32,16 @@ public class UserRequestDTO {
     private RequestStatusTypes status;
 
     public static UserRequestDTO convert(UserRequestEntity userRequestEntity, Function<UUID, Optional<UserRepresentation>> getUserFunction) {
-
+        if (userRequestEntity == null) return null;
         UserRepresentation user = getUserFunction.apply(userRequestEntity.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        return new UserRequestDTO(
-                userRequestEntity.getId(),
-                UserDTO.convert(user),
-                userRequestEntity.getTelephone(),
-                userRequestEntity.getTimeToCall(),
-                userRequestEntity.getStatus()
-        );
+        return UserRequestDTO.builder()
+                .id(userRequestEntity.getId())
+                .user(UserDTO.convert(user))
+                .telephone(userRequestEntity.getTelephone())
+                .timeToCall(userRequestEntity.getTimeToCall())
+                .status(userRequestEntity.getStatus())
+                .build();
     }
 }

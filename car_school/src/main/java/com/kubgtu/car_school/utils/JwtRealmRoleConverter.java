@@ -21,7 +21,7 @@ public class JwtRealmRoleConverter implements Converter<Jwt, Collection<GrantedA
 
         Collection<String> roles = (Collection<String>) realmAccess.get("roles");
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())) // Добавляем ROLE_ вручную
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
                 .collect(Collectors.toList());
     }
 }

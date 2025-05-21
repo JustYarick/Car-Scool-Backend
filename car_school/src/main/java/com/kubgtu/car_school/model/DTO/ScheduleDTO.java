@@ -25,13 +25,24 @@ public class ScheduleDTO {
     private SubjectDTO subjectId;
 
     public static ScheduleDTO convert(ScheduleEntity schedule) {
-        return new ScheduleDTO(
-                schedule.getId(),
-                schedule.getGroup().getId(),
-                schedule.getTeacherUUID(),
-                schedule.getLessonDateStart(),
-                schedule.getLessonDateEnd(),
-                SubjectDTO.convert(schedule.getSubject())
-        );
+        if (schedule == null) return null;
+
+        Long groupId = schedule.getGroup() != null ? schedule.getGroup().getId() : null;
+        UUID teacherUUID = schedule.getTeacherUUID();
+        LocalDateTime lessonDateStart = schedule.getLessonDateStart();
+        LocalDateTime lessonDateEnd = schedule.getLessonDateEnd();
+
+        SubjectDTO subjectDTO = schedule.getSubject() != null
+                ? SubjectDTO.convert(schedule.getSubject())
+                : null;
+
+        return ScheduleDTO.builder()
+                .id(schedule.getId())
+                .groupId(groupId)
+                .teacherId(teacherUUID)
+                .lessonDateStart(lessonDateStart)
+                .lessonDateEnd(lessonDateEnd)
+                .subjectId(subjectDTO)
+                .build();
     }
 }
