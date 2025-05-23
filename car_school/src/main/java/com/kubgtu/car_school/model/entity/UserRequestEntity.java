@@ -25,5 +25,6 @@ public class UserRequestEntity {
     @Column(updatable = false)
     private LocalDateTime createRequestDate;
     private LocalDateTime timeToCall;
+    @Enumerated(EnumType.STRING)
     private RequestStatusTypes status = RequestStatusTypes.NEW;
 }

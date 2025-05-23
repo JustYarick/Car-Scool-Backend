@@ -1,19 +1,19 @@
 -- Создание таблицы "groups"
 CREATE TABLE groups (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
 -- Создание таблицы "subjects"
 CREATE TABLE subjects (
-    subject_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    subject_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     subject_name VARCHAR(255) NOT NULL,
     subject_description TEXT
 );
 
 -- Создание таблицы "schedules"
 CREATE TABLE schedules (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     group_id BIGINT,
     teacher_uuid UUID NOT NULL,
     lesson_date_start TIMESTAMP,
@@ -32,7 +32,7 @@ CREATE TABLE group_students (
 
 -- Создание таблицы "users_requests"
 CREATE TABLE users_requests (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id UUID NOT NULL,
     telephone VARCHAR(15),
     create_request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

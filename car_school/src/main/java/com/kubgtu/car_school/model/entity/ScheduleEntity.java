@@ -23,6 +23,7 @@ public class ScheduleEntity {
     @JoinColumn(name = "group_id")
     private GroupEntity group;
 
+    @Column(name = "teacher_uuid")
     private UUID teacherUUID;
 
     @Column(name = "lesson_date_start")
