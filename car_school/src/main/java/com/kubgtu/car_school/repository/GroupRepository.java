@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
-
     List<GroupEntity> findAllByOrderByNameAsc(Pageable pageable);
+    List<GroupEntity> findByStudentsUuidContaining(UUID studentUuid);
 }

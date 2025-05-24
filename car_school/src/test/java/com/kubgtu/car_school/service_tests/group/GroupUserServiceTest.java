@@ -3,12 +3,10 @@ package com.kubgtu.car_school.service_tests.group;
 
 import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
-import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.model.DTO.UserDTO;
 import com.kubgtu.car_school.model.entity.GroupEntity;
 import com.kubgtu.car_school.model.interfaces.IamApiService;
 import com.kubgtu.car_school.repository.GroupRepository;
-import com.kubgtu.car_school.service.group.GroupService;
 import com.kubgtu.car_school.service.group.GroupUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

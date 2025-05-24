@@ -48,7 +48,7 @@ class SubjectServiceTest {
         SubjectEntity savedEntity = new SubjectEntity(1L, "Physics", "Mechanics");
         when(subjectRepository.save(any())).thenReturn(savedEntity);
 
-        SubjectEntity result = subjectService.create(request);
+        SubjectDTO result = subjectService.create(request);
 
         assertNotNull(result);
         assertEquals("Physics", result.getSubjectName());

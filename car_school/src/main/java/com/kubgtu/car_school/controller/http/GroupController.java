@@ -1,7 +1,8 @@
 package com.kubgtu.car_school.controller.http;
 
 import com.kubgtu.car_school.model.DTO.GroupDTO;
-import com.kubgtu.car_school.model.DTO.UserDTO;
+import com.kubgtu.car_school.model.responces.GroupResponse;
+import com.kubgtu.car_school.model.responces.UserResponce;
 import com.kubgtu.car_school.service.group.GroupService;
 import com.kubgtu.car_school.service.group.GroupUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -29,9 +30,12 @@ public class GroupController {
     )
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<List<GroupDTO>> getAllGroups(@RequestParam(required = false, defaultValue = "0") int page,
-                                                       @RequestParam(required = false, defaultValue = "100") int size) {
-        return ResponseEntity.ok(groupService.getByPage(page, size));
+    public ResponseEntity<GroupResponse> getAllGroups(@RequestParam(required = false, defaultValue = "0") int page,
+                                                      @RequestParam(required = false, defaultValue = "100") int size) {
+        return ResponseEntity.ok(GroupResponse.builder()
+                .data(groupService.getByPage(page, size))
+                .build()
+        );
     }
 
     @Operation(
@@ -40,8 +44,21 @@ public class GroupController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id) {
-        return ResponseEntity.ok(groupService.getById(id));
+    public ResponseEntity<GroupResponse> getGroupById(@PathVariable Long id) {
+        return ResponseEntity.ok(new GroupResponse(groupService.getById(id)));
+    }
+
+    @Operation(
+            summary = "Получить группу по id",
+            description = "Доступно админам, преподавателям, студентам"
+    )
+    @GetMapping("/byStudent/{uuid}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public ResponseEntity<GroupResponse> getGroupByStudent(@Valid @PathVariable UUID uuid) {
+        return ResponseEntity.ok(GroupResponse.builder()
+                .data(groupService.getByStudent(uuid))
+                .build()
+        );
     }
 
     @Operation(
@@ -50,8 +67,11 @@ public class GroupController {
     )
     @GetMapping("/{id}/users")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public ResponseEntity<List<UserDTO>> getUsersByGroupId(@PathVariable Long id) {
-        return ResponseEntity.ok(groupUserService.getGroupUsers(id));
+    public ResponseEntity<UserResponce> getUsersByGroupId(@PathVariable Long id) {
+        return ResponseEntity.ok(UserResponce.builder()
+                .data(groupUserService.getGroupUsers(id))
+                .build()
+        );
     }
 
     @Operation(
@@ -60,9 +80,9 @@ public class GroupController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<GroupDTO> createGroup(@RequestParam String name ) {
+    public ResponseEntity<GroupResponse> create(@RequestParam String name ) {
         if (name == null || name.isBlank()) throw  new IllegalArgumentException("name is null or empty");
-        return ResponseEntity.ok(groupService.create(name));
+        return ResponseEntity.ok(new GroupResponse(groupService.create(name)));
     }
 
     @Operation(
@@ -71,8 +91,8 @@ public class GroupController {
     )
     @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<GroupDTO> updateGroup(@Valid @RequestBody GroupDTO groupDTO) {
-        return ResponseEntity.ok(groupService.update(groupDTO));
+    public ResponseEntity<GroupResponse> updateGroup(@Valid @RequestBody GroupDTO groupDTO) {
+        return ResponseEntity.ok(new GroupResponse(groupService.update(groupDTO)));
     }
 
     @Operation(

@@ -25,11 +25,11 @@ public class SubjectService {
                 .toList();
     }
 
-    public SubjectEntity create(CreateSubjectRequest subjectRequest) {
+    public SubjectDTO create(CreateSubjectRequest subjectRequest) {
         SubjectEntity subjectEntity = new SubjectEntity();
         subjectEntity.setSubjectDescription(subjectRequest.getSubjectDescription());
         subjectEntity.setSubjectName(subjectRequest.getSubjectName());
-        return subjectRepository.save(subjectEntity);
+        return SubjectDTO.convert(subjectRepository.save(subjectEntity));
     }
 
     public void delete(Long id) {

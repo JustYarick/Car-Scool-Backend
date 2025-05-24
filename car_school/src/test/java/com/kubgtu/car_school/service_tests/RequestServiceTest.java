@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
-public class RequestServiceTest {
+class RequestServiceTest {
     @InjectMocks
     private RequestService requestService;
 

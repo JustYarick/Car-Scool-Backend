@@ -1,8 +1,8 @@
 package com.kubgtu.car_school.controller.http;
 
-import com.kubgtu.car_school.model.DTO.SubjectDTO;
 import com.kubgtu.car_school.model.requests.CreateSubjectRequest;
 import com.kubgtu.car_school.model.requests.UpdateSubjectRequest;
+import com.kubgtu.car_school.model.responces.SubjectResponse;
 import com.kubgtu.car_school.service.SubjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/subject")
@@ -25,8 +23,8 @@ public class SubjectController {
     )
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<SubjectDTO> addSubject(@Valid  @RequestBody CreateSubjectRequest subjectRequest) {
-        return ResponseEntity.ok(SubjectDTO.convert(subjectService.create(subjectRequest)));
+    public ResponseEntity<SubjectResponse> addSubject(@Valid  @RequestBody CreateSubjectRequest subjectRequest) {
+        return ResponseEntity.ok(new SubjectResponse(subjectService.create(subjectRequest)));
     }
 
     @Operation(
@@ -45,9 +43,12 @@ public class SubjectController {
             description = "Доступно всем"
     )
     @GetMapping
-    public ResponseEntity<List<SubjectDTO>> getAllSubjects(@RequestParam(required = false, defaultValue = "0") int page,
-                                                           @RequestParam(required = false, defaultValue = "100") int size) {
-        return ResponseEntity.ok(subjectService.getByPage(page, size));
+    public ResponseEntity<SubjectResponse> getAllSubjects(@RequestParam(required = false, defaultValue = "0") int page,
+                                                          @RequestParam(required = false, defaultValue = "100") int size) {
+        return ResponseEntity.ok(SubjectResponse.builder()
+                .data(subjectService.getByPage(page, size))
+                .build()
+        );
     }
 
     @Operation(
@@ -55,8 +56,8 @@ public class SubjectController {
             description = "Доступно всем"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectDTO> getSubjectById(@Valid @PathVariable  Long id) {
-        return ResponseEntity.ok(subjectService.getSubjectById(id));
+    public ResponseEntity<SubjectResponse> getSubjectById(@Valid @PathVariable  Long id) {
+        return ResponseEntity.ok(new SubjectResponse(subjectService.getSubjectById(id)));
     }
 
     @Operation(
@@ -65,7 +66,7 @@ public class SubjectController {
     )
     @PatchMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<SubjectDTO> updateSubject(@Valid @RequestBody UpdateSubjectRequest subjectRequest) {
-        return ResponseEntity.ok(subjectService.update(subjectRequest));
+    public ResponseEntity<SubjectResponse> updateSubject(@Valid @RequestBody UpdateSubjectRequest subjectRequest) {
+        return ResponseEntity.ok(new SubjectResponse(subjectService.update(subjectRequest)));
     }
 }

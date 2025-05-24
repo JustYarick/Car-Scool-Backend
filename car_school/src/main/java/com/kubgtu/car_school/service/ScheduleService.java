@@ -5,17 +5,21 @@ import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.ResourceNotFoundException;
 import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.DTO.ScheduleDTO;
+import com.kubgtu.car_school.model.entity.SubjectEntity;
 import com.kubgtu.car_school.model.interfaces.IamApiService;
 import com.kubgtu.car_school.model.requests.CreateScheduleRequest;
 import com.kubgtu.car_school.model.requests.UpdateScheduleRequest;
 import com.kubgtu.car_school.repository.GroupRepository;
 import com.kubgtu.car_school.repository.ScheduleRepository;
 import com.kubgtu.car_school.repository.SubjectRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -49,8 +53,9 @@ public class ScheduleService {
                 .orElseThrow(() -> new GroupNotFoundException("Group not found")));
 
         scheduleEntity.setTeacherUUID(request.getTeacherUUID());
-        if(subjectRepository.findById(request.getSubjectId()).isEmpty()) throw new ResourceNotFoundException("Subject not found");
-        scheduleEntity.setSubject(subjectRepository.findById(request.getSubjectId()).get());
+        Optional<SubjectEntity> subjectEntityOptional = subjectRepository.findById(request.getSubjectId());
+        if(subjectEntityOptional.isEmpty()) throw new ResourceNotFoundException("Subject not found");
+        scheduleEntity.setSubject(subjectEntityOptional.get());
 
         return ScheduleDTO.convert(scheduleRepository.save(scheduleEntity));
     }
@@ -78,5 +83,24 @@ public class ScheduleService {
             throw new ResourceNotFoundException("Schedule not found");
         }
         scheduleRepository.deleteById(id);
+    }
+
+    public List<ScheduleDTO> getSchedulesByGroup(Long id) {
+        if (id == null) throw new ResourceNotFoundException("Group not found");
+
+        return scheduleRepository.findByGroup_Id(id)
+                .stream()
+                .map(ScheduleDTO::convert)
+                .toList();
+    }
+
+    public List<ScheduleDTO> getSchedulesByStudent(UUID uuid) {
+        if (uuid == null) throw new ResourceNotFoundException("Student not found");
+
+        List<ScheduleEntity> schedules = scheduleRepository.findDistinctByStudentUuid(uuid);
+
+        return schedules.stream()
+                .map(ScheduleDTO::convert)
+                .toList();
     }
 }

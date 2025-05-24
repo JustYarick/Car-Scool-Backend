@@ -22,7 +22,7 @@ public class SecurityConfig {
         this.issuerUrl = issuerUrl;
     }
 
-    private String issuerUrl;
+    private final String issuerUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -1,15 +1,18 @@
 package com.kubgtu.car_school.service.group;
 
+import com.kubgtu.car_school.exception.ExceptionClass.UserNotFoundException;
 import com.kubgtu.car_school.model.entity.GroupEntity;
 import com.kubgtu.car_school.exception.ExceptionClass.GroupNotFoundException;
 import com.kubgtu.car_school.model.DTO.GroupDTO;
 import com.kubgtu.car_school.repository.GroupRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -58,5 +61,13 @@ public class GroupService {
             group.setStudentsUuid(groupDTO.getStudentUuids());
         }
         return GroupDTO.convert(groupRepository.save(group));
+    }
+
+    public List<GroupDTO> getByStudent(@Valid UUID uuid) {
+        if (uuid == null) throw new UserNotFoundException("uuid is null");
+        return groupRepository.findByStudentsUuidContaining(uuid)
+                .stream()
+                .map(GroupDTO::convert)
+                .toList();
     }
 }
